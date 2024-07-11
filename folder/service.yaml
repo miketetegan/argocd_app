@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: nginx-service
+spec:
+  selector:
+    app: nginx
+  type: LoadBalancer #Assign external IP . for external service>  ports:
+  ports:
+    - protocol: TCP
+      port: 8800 #Port used to access the pod externally
+      targetPort: 80 #need to match container port
+      nodePort: 31000 #external port used to access the service
