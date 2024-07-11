@@ -1,0 +1,47 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-deployment
+  labels:
+    app: nginx
+#Deployment specifications
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: nginx
+  template:
+    metadata:
+      labels:
+        app: nginx
+#Pod specifications
+    spec:
+      containers:
+      -  name: nginx
+         image: nginx:1.25
+         ports:
+         -  containerPort: 80
+#      volumes:
+#        - name: mypd
+#          persistentVolumeClain:
+#            claimName: pvc-name
+#        - name: config-dir
+#          configMap:
+#            Name: bb-configmap
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: nginx-service
+spec:
+  selector:
+    app: nginx
+  type: LoadBalancer #Assign external IP . for external service>  ports:
+  ports:
+    - protocol: TCP
+      port: 8800 #Port used to access the pod externally
+      targetPort: 80 #need to match container port
+      nodePort: 31000 #external port used to access the service
+
+    
